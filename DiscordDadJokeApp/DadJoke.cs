@@ -15,7 +15,6 @@ namespace DiscordDadJokeApp {
 
         private static string DeserializeGetRequest(string content) {
             return JsonSerializer.Deserialize<Format.DadJokeFormat>(content).joke;
-
         }
     }
 }
