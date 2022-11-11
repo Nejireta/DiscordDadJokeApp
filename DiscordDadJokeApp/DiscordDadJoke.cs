@@ -16,11 +16,14 @@ namespace DiscordDadJokeApp {
             Discord discord = new(_channelId, _webhook);
             try {
                 HttpResponseMessage httpResponseMessage = await discord.SendToChatAsync();
-
-                log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-                log.LogInformation($"Sent chat to Dad bot with reponse: {httpResponseMessage.StatusCode}");
+                if (httpResponseMessage.IsSuccessStatusCode) {
+                    log.LogInformation($"Successfully sent message to Dad Bot\nResponse StatusCode: {httpResponseMessage.StatusCode}");
+                }
+                else {
+                    log.LogInformation($"Failed sending message to Dad Bot\nResponse StatusCode: {httpResponseMessage.StatusCode}");
+                }
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 log.LogError(ex.ToString());
             }
             finally {
