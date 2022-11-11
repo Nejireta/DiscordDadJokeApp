@@ -22,8 +22,8 @@ namespace DiscordDadJokeApp {
                 return BuildString(DeserializeGetRequest(await _httpResponseMessage.Content.ReadAsStringAsync()));
             }
             finally {
-                _httpRequestMessage.Dispose();
-                _httpResponseMessage.Dispose();
+                //_httpRequestMessage.Dispose();
+                //_httpResponseMessage.Dispose();
             }
         }
 
