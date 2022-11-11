@@ -10,14 +10,20 @@ using static DiscordDadJokeApp.Format.DadJokeFormat;
 namespace DiscordDadJokeApp {
     internal sealed class DadJoke {
         private static readonly IConfigurationRoot _configurationRoot = ApplicationSettings.Get();
+        private static readonly HttpRequestMessage _httpRequestMessage = new();
+        private static HttpResponseMessage _httpResponseMessage = new();
 
         internal static async Task<string> GetAsync(HttpClient httpClient) {
-            using (HttpRequestMessage httpRequestMessage = NewRequestMessage()) {
-                using (HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage)) {
-                    _ = httpResponseMessage.EnsureSuccessStatusCode();
-                    DadJokeBodyFormat deserializedResponseMessage = DeserializeGetRequest(await httpResponseMessage.Content.ReadAsStringAsync());
-                    return BuildJokeString(deserializedResponseMessage);
-                }
+            try {
+                BuildRequestMessage();
+                _httpResponseMessage = await httpClient.SendAsync(_httpRequestMessage);
+                _ = _httpResponseMessage.EnsureSuccessStatusCode();
+                //DadJokeBodyFormat deserializedResponseMessage = BuildJokeString(DeserializeGetRequest(await _httpResponseMessage.Content.ReadAsStringAsync()));
+                return BuildString(DeserializeGetRequest(await _httpResponseMessage.Content.ReadAsStringAsync()));
+            }
+            finally {
+                _httpRequestMessage.Dispose();
+                _httpResponseMessage.Dispose();
             }
         }
 
@@ -25,21 +31,18 @@ namespace DiscordDadJokeApp {
             return JsonSerializer.Deserialize<DadJokeFormat>(content).Body;
         }
 
-        private static string BuildJokeString(DadJokeBodyFormat dadJokeFormatBody) {
+        private static string BuildString(DadJokeBodyFormat dadJokeFormatBody) {
             StringBuilder stringBuilder = new();
             _ = stringBuilder.AppendLine(dadJokeFormatBody.Setup);
             _ = stringBuilder.AppendLine(dadJokeFormatBody.Punchline);
             return stringBuilder.ToString();
         }
 
-        private static HttpRequestMessage NewRequestMessage() {
-            HttpRequestMessage httpRequestMessage = new() {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(_configurationRoot["DadJokeURI"])
-            };
-            httpRequestMessage.Headers.Add("X-RapidAPI-Key", _configurationRoot["RapidAPIKey"]);
-            httpRequestMessage.Headers.Add("X-RapidAPI-Host", _configurationRoot["RapidAPIHost"]);
-            return httpRequestMessage;
+        private static void BuildRequestMessage() {
+            _httpRequestMessage.Method = HttpMethod.Get;
+            _httpRequestMessage.RequestUri = new Uri(_configurationRoot["DadJokeURI"]);
+            _httpRequestMessage.Headers.Add("X-RapidAPI-Key", _configurationRoot["RapidAPIKey"]);
+            _httpRequestMessage.Headers.Add("X-RapidAPI-Host", _configurationRoot["RapidAPIHost"]);
         }
     }
 }

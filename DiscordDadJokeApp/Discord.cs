@@ -16,7 +16,7 @@ namespace DiscordDadJokeApp {
         internal string EmbedsThumbnail = "https://i.ibb.co/HF7XL8F/pipe-removebg-preview.jpg";
         private bool disposedValue;
         private readonly HttpClient _httpClient = new();
-        private readonly DadJoke _dadJoke = new();
+        //private readonly DadJoke _dadJoke = new();
 
         internal Discord(string channelID, string webhook) {
             ChannelID = channelID;
@@ -25,7 +25,7 @@ namespace DiscordDadJokeApp {
 
         internal async Task<HttpResponseMessage> SendToChatAsync() {
             try {
-                Init();
+                BuildHttpClient();
                 string jsonSerializedContent = SerializeBodyContent(await DadJoke.GetAsync(_httpClient));
                 using (HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(CreateWebhookUri(), NewPostContent(jsonSerializedContent))) {
                     _ = httpResponseMessage.EnsureSuccessStatusCode();
@@ -47,7 +47,7 @@ namespace DiscordDadJokeApp {
             return stringContent;
         }
 
-        private void Init() {
+        private void BuildHttpClient() {
             _httpClient.Timeout = TimeSpan.FromSeconds(5);
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
