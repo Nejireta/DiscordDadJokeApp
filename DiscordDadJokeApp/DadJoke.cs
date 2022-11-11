@@ -15,10 +15,14 @@ namespace DiscordDadJokeApp {
 
         internal static async Task<string> GetAsync(HttpClient httpClient) {
             try {
+                Console.WriteLine("Executing DadJoke.GetAsync.BuildRequestMessage()");
                 BuildRequestMessage();
+                Console.WriteLine("Executing DadJoke.GetAsync.SendAsync()");
                 _httpResponseMessage = await httpClient.SendAsync(_httpRequestMessage);
+                Console.WriteLine("Executing DadJoke.GetAsync.EnsureSuccessStatusCode()");
                 _ = _httpResponseMessage.EnsureSuccessStatusCode();
                 //DadJokeBodyFormat deserializedResponseMessage = BuildJokeString(DeserializeGetRequest(await _httpResponseMessage.Content.ReadAsStringAsync()));
+                Console.WriteLine("Executing DadJoke.GetAsync.ReadAsStringAsync.DeserializeGetRequest.BuildString()");
                 return BuildString(DeserializeGetRequest(await _httpResponseMessage.Content.ReadAsStringAsync()));
             }
             finally {
@@ -28,13 +32,13 @@ namespace DiscordDadJokeApp {
         }
 
         private static DadJokeBodyFormat DeserializeGetRequest(string content) {
-            return JsonSerializer.Deserialize<DadJokeFormat>(content).Body;
+            return JsonSerializer.Deserialize<DadJokeFormat>(content).body;
         }
 
         private static string BuildString(DadJokeBodyFormat dadJokeFormatBody) {
             StringBuilder stringBuilder = new();
-            _ = stringBuilder.AppendLine(dadJokeFormatBody.Setup);
-            _ = stringBuilder.AppendLine(dadJokeFormatBody.Punchline);
+            _ = stringBuilder.AppendLine(dadJokeFormatBody.setup);
+            _ = stringBuilder.AppendLine(dadJokeFormatBody.punchline);
             return stringBuilder.ToString();
         }
 

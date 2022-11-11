@@ -2,23 +2,23 @@
     internal class Format {
         public sealed class DadJokeFormat {
             //[DisplayName("Success")]
-            public bool Success { get; set; } //success
-            public DadJokeBodyFormat Body { get; set; } //body
+            public bool success { get; set; } //success
+            public DadJokeBodyFormat body { get; set; } //body
             public sealed class DadJokeBodyFormat {
-                public string Id { get; set; } //_id
-                public string Setup { get; set; } //setup
-                public string Punchline { get; set; } //punchline
-                public string Type { get; set; } //type
-                public string[] Likes { get; set; } //likes
-                public AuthorSubclass Author { get; set; } //author
-                public bool Approved { get; set; } //approved
-                public int Date { get; set; } //date
+                public string _id { get; set; } //_id
+                public string setup { get; set; } //setup
+                public string punchline { get; set; } //punchline
+                public string type { get; set; } //type
+                public string[] likes { get; set; } //likes
+                public AuthorSubclass author { get; set; } //author
+                public bool approved { get; set; } //approved
+                public int date { get; set; } //date
                 public bool NSFW { get; set; } //NSFW
-                public string ShareableLink { get; set; } //shareableLink
+                public string shareableLink { get; set; } //shareableLink
 
                 public sealed class AuthorSubclass {
-                    public string Name { get; set; } //name
-                    public int Id { get; set; } //id
+                    public string Nanameme { get; set; } //name
+                    public int id { get; set; } //id
                 }
             }
         }
