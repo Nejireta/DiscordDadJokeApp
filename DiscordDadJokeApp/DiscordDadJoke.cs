@@ -8,8 +8,6 @@ using Microsoft.Extensions.Logging;
 namespace DiscordDadJokeApp {
     public class DiscordDadJoke {
         private readonly IConfigurationRoot _configurationRoot = ApplicationSettings.Get();
-        //private readonly string _channelId = "1035625089590378526";
-        //private readonly string _webhook = "DtNNNZIjbu4kgKTiE-8_zMz13kY0evLHw8GMNgW_h5Nyq3PljJkGypmRD-FZ9rKH4SlB";
 
         [FunctionName("SendDadJoke")]
         public async Task RunAsync([TimerTrigger("0 0 14 * * *")] TimerInfo myTimer, ILogger log) {
