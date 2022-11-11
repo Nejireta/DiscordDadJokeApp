@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,6 +16,7 @@ namespace DiscordDadJokeApp {
         internal string EmbedsThumbnail = "https://i.ibb.co/HF7XL8F/pipe-removebg-preview.jpg";
         private bool disposedValue;
         private readonly HttpClient _httpClient = new();
+        private readonly DadJoke _dadJoke = new();
 
         internal Discord(string channelID, string webhook) {
             ChannelID = channelID;
@@ -26,10 +26,11 @@ namespace DiscordDadJokeApp {
         internal async Task<HttpResponseMessage> SendToChatAsync() {
             try {
                 Init();
-                string dadJoke = await DadJoke.GetAsync(_httpClient);
                 string jsonSerializedContent = SerializeBodyContent(await DadJoke.GetAsync(_httpClient));
-                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(CreateWebhookUri(), NewPostContent(jsonSerializedContent));
-                return httpResponseMessage;
+                using (HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(CreateWebhookUri(), NewPostContent(jsonSerializedContent))) {
+                    _ = httpResponseMessage.EnsureSuccessStatusCode();
+                    return httpResponseMessage;
+                }
             }
             catch (Exception) {
                 throw;
@@ -44,12 +45,6 @@ namespace DiscordDadJokeApp {
             StringContent stringContent = new(content, Encoding.UTF8, "application/json");
             stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return stringContent;
-        }
-
-        private static HttpRequestMessage NewRequestMessage(Format.DiscordChatFormat discordChatFormat, Uri uri) {
-            return new HttpRequestMessage(HttpMethod.Post, uri) {
-                Content = JsonContent.Create(discordChatFormat),
-            };
         }
 
         private void Init() {
@@ -74,7 +69,7 @@ namespace DiscordDadJokeApp {
                 embeds = embeds
             };
 
-            return JsonSerializer.Serialize<Format.DiscordChatFormat>(format);
+            return JsonSerializer.Serialize(format);
         }
 
         protected virtual void Dispose(bool disposing) {
