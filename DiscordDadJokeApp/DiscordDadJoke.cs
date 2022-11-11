@@ -21,7 +21,6 @@ namespace DiscordDadJokeApp {
             finally {
                 discord.Dispose();
             }
-
         }
     }
 }
