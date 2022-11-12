@@ -33,6 +33,7 @@ namespace DiscordDadJokeApp {
         private static string BuildString(DadJokeBodyFormat dadJokeFormatBody) {
             StringBuilder stringBuilder = new();
             _ = stringBuilder.AppendLine(dadJokeFormatBody.setup);
+            _ = stringBuilder.AppendLine();
             _ = stringBuilder.AppendLine(dadJokeFormatBody.punchline);
             return stringBuilder.ToString();
         }
