@@ -5,18 +5,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static DiscordDadJokeApp.Format;
+using static DiscordDadJokeApp.Format.DiscordChatFormat;
+using static DiscordDadJokeApp.Format.DiscordChatFormat.Embeds;
 
 namespace DiscordDadJokeApp {
     internal class Discord : IDisposable {
         internal string ChannelID { get; set; }
         internal string Webhook { get; set; }
-        internal Uri DiscordWebHookUri = new("https://discord.com/api/webhooks/");
-        internal string EmbedsTitle = "Hello, I'm Dad!";
-        internal string EmbedsColor = "11697914";
-        internal string EmbedsThumbnail = "https://i.ibb.co/HF7XL8F/pipe-removebg-preview.jpg";
+        internal readonly Uri DiscordWebHookUri = new("https://discord.com/api/webhooks/");
+        internal const string EmbedsTitle = "Hello, I'm Dad!";
+        internal const string EmbedsColor = "11697914";
+        internal const string EmbedsThumbnail = "https://i.ibb.co/HF7XL8F/pipe-removebg-preview.jpg";
         private bool disposedValue;
         private readonly HttpClient _httpClient = new();
-        //private readonly DadJoke _dadJoke = new();
 
         internal Discord(string channelID, string webhook) {
             ChannelID = channelID;

@@ -1,40 +1,37 @@
 ﻿namespace DiscordDadJokeApp {
     internal class Format {
         public sealed class DadJokeFormat {
-            //[DisplayName("Success")]
-            public bool success { get; set; } //success
-            public DadJokeBodyFormat body { get; set; } //body
-        }
-        public sealed class DadJokeBodyFormat {
-            public string _id { get; set; } //_id
-            public string setup { get; set; } //setup
-            public string punchline { get; set; } //punchline
-            public string type { get; set; } //type
-            public string[] likes { get; set; } //likes
-            public AuthorSubclass author { get; set; } //author
-            public bool approved { get; set; } //approved
-            public int date { get; set; } //date
-            public bool NSFW { get; set; } //NSFW
-            public string shareableLink { get; set; } //shareableLink
-        }
+            public bool success { get; set; }
+            public DadJokeBodyFormat[] body { get; set; }
 
-        public sealed class AuthorSubclass {
-            public string name { get; set; } //name
-            public int id { get; set; } //id
+            public sealed class DadJokeBodyFormat {
+                public string _id { get; set; }
+                public string setup { get; set; }
+                public string punchline { get; set; }
+                public string type { get; set; }
+                public string[]? likes { get; set; }
+                public Author author { get; set; }
+                public bool approved { get; set; }
+                public int date { get; set; }
+                public bool NSFW { get; set; }
+                public string shareableLink { get; set; }
+                public sealed class Author {
+                    public string name { get; set; }
+                    public string? id { get; set; }
+                }
+            }
         }
         public sealed class DiscordChatFormat {
             public Embeds[] embeds { get; set; }
-        }
-
-        public sealed class Embeds {
-            public string title { get; set; }
-            public string description { get; set; }
-            public string color { get; set; }
-            public Thumbnail thumbnail { get; set; }
-        }
-
-        public sealed class Thumbnail {
-            public string url { get; set; }
+            public sealed class Embeds {
+                public string title { get; set; }
+                public string description { get; set; }
+                public string color { get; set; }
+                public Thumbnail thumbnail { get; set; }
+                public sealed class Thumbnail {
+                    public string url { get; set; }
+                }
+            }
         }
     }
 }

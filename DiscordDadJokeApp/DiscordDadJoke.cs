@@ -11,21 +11,20 @@ namespace DiscordDadJokeApp {
 
         [FunctionName("SendDadJoke")]
         public async Task RunAsync([TimerTrigger("0 0 14 * * *")] TimerInfo myTimer, ILogger log) {
-            Discord discord = new(_configurationRoot["DiscordChannelID"], _configurationRoot["DiscordWebhook"]);
             try {
-                HttpResponseMessage httpResponseMessage = await discord.SendToChatAsync();
-                if (httpResponseMessage.IsSuccessStatusCode) {
-                    log.LogInformation($"Successfully sent message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
-                }
-                else {
-                    log.LogInformation($"Failed sending message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
+                using (Discord discord = new(_configurationRoot["DiscordChannelID"], _configurationRoot["DiscordWebhook"])) {
+                    using (HttpResponseMessage httpResponseMessage = await discord.SendToChatAsync()) {
+                        if (httpResponseMessage.IsSuccessStatusCode) {
+                            log.LogInformation($"Successfully sent message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
+                        }
+                        else {
+                            log.LogInformation($"Failed sending message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
+                        }
+                    }
                 }
             }
             catch (Exception ex) {
                 log.LogError(ex.ToString());
-            }
-            finally {
-                discord.Dispose();
             }
         }
     }
