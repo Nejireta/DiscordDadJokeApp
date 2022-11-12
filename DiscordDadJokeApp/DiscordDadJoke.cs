@@ -15,10 +15,10 @@ namespace DiscordDadJokeApp {
                 using (Discord discord = new(_configurationRoot["DiscordChannelID"], _configurationRoot["DiscordWebhook"])) {
                     using (HttpResponseMessage httpResponseMessage = await discord.SendToChatAsync()) {
                         if (httpResponseMessage.IsSuccessStatusCode) {
-                            log.LogInformation($"Successfully sent message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
+                            log.LogInformation($"Successfully sent message to Dad Bot. Response StatusCode: {httpResponseMessage.StatusCode}");
                         }
                         else {
-                            log.LogInformation($"Failed sending message to Dad Bot (leveled up). Response StatusCode: {httpResponseMessage.StatusCode}");
+                            log.LogInformation($"Failed sending message to Dad Bot. Response StatusCode: {httpResponseMessage.StatusCode}");
                         }
                     }
                 }
