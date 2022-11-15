@@ -10,6 +10,7 @@ namespace DiscordDadJokeApp {
         private readonly IConfigurationRoot _configurationRoot = ApplicationSettings.Get();
 
         [FunctionName("SendDadJoke")]
+        // Run at 14:00 UTC every day
         public async Task RunAsync([TimerTrigger("0 0 14 * * *")] TimerInfo myTimer, ILogger log) {
             try {
                 using (Discord discord = new(
