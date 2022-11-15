@@ -12,16 +12,24 @@ namespace DiscordDadJokeApp {
     internal class Discord : IDisposable {
         internal string ChannelID { get; set; }
         internal string Webhook { get; set; }
+        internal string EmbedsTitle { get; set; } = "Hello, I'm Dad!";
+        internal string EmbedsColor { get; set; } = "11697914";
+        internal string EmbedsThumbnail { get; set; } = "https://images.unsplash.com/photo-1580044305912-70d6e42062cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=500";
+
         internal readonly Uri DiscordWebHookUri = new("https://discord.com/api/webhooks/");
-        internal const string EmbedsTitle = "Hello, I'm Dad!";
-        internal const string EmbedsColor = "11697914";
-        internal const string EmbedsThumbnail = "https://i.ibb.co/HF7XL8F/pipe-removebg-preview.jpg";
-        private bool disposedValue;
         private readonly HttpClient _httpClient = new();
+        private bool disposedValue;
 
         internal Discord(string channelID, string webhook) {
             ChannelID = channelID;
             Webhook = webhook;
+        }
+        internal Discord(string channelID, string webhook, string embedsTitle, string embedsColor, string embedsThumbnail) {
+            ChannelID = channelID;
+            Webhook = webhook;
+            EmbedsTitle = embedsTitle;
+            EmbedsColor = embedsColor;
+            EmbedsThumbnail = embedsThumbnail;
         }
 
         internal async Task<HttpResponseMessage> SendToChatAsync() {

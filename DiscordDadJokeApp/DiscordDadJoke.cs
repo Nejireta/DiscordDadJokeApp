@@ -12,7 +12,13 @@ namespace DiscordDadJokeApp {
         [FunctionName("SendDadJoke")]
         public async Task RunAsync([TimerTrigger("0 0 14 * * *")] TimerInfo myTimer, ILogger log) {
             try {
-                using (Discord discord = new(_configurationRoot["DiscordChannelID"], _configurationRoot["DiscordWebhook"])) {
+                using (Discord discord = new(
+                            _configurationRoot["DiscordChannelID"],
+                            _configurationRoot["DiscordWebhook"],
+                            _configurationRoot["EmbedsTitle"],
+                            _configurationRoot["EmbedsColor"],
+                            _configurationRoot["EmbedsThumbnail"]
+                        )) {
                     using (HttpResponseMessage httpResponseMessage = await discord.SendToChatAsync()) {
                         if (httpResponseMessage.IsSuccessStatusCode) {
                             log.LogInformation($"Successfully sent message to Dad Bot. Response StatusCode: {httpResponseMessage.StatusCode}");
